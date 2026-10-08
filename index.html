@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VoidMarket — Blox Fruits Marketplace</title>
+<style>
+:root{--bg:#08050f;--card:#120c1d;--card2:#1a1028;--p:#a855f7;--p2:#d946ef;--txt:#f5efff;--muted:#a99bb7;--line:#2d1d3e;--ok:#34d399;--bad:#fb7185}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#2b1248 0,transparent 35%),radial-gradient(circle at 90% 10%,#25113d 0,transparent 30%),var(--bg);color:var(--txt);font-family:Inter,system-ui,Arial,sans-serif}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
+.nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);background:#08050fcc;border-bottom:1px solid var(--line);padding:14px 5%;display:flex;align-items:center;gap:20px}
+.logo{font-weight:900;font-size:22px}.logo span{color:var(--p2)}.navlinks{display:flex;gap:16px;margin-left:auto;align-items:center}.navlinks button{background:none;color:var(--muted)}.btn{padding:10px 15px;border-radius:11px;background:linear-gradient(135deg,var(--p),var(--p2));color:white;font-weight:800;box-shadow:0 0 22px #a855f733}.ghost{background:#ffffff08;border:1px solid var(--line);color:var(--txt);box-shadow:none}.wrap{max-width:1180px;margin:auto;padding:35px 18px}
+.hero{padding:70px 0 45px;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}.hero h1{font-size:clamp(40px,7vw,78px);line-height:.95;margin:0 0 18px}.grad{background:linear-gradient(90deg,#fff,var(--p2),#a855f7);-webkit-background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:18px;max-width:650px}.hero-card{background:linear-gradient(145deg,#21122f,#100a18);border:1px solid #4a2c67;border-radius:24px;padding:24px;box-shadow:0 0 50px #7c3aed22}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:25px}.stat{background:#ffffff06;border:1px solid var(--line);border-radius:15px;padding:16px}.stat b{font-size:24px}.muted{color:var(--muted)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.search{flex:1;min-width:220px}.input,.select,.area{width:100%;background:#0d0814;border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:12px;outline:none}.input:focus,.select:focus,.area:focus{border-color:var(--p)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:linear-gradient(145deg,#130c1e,#0d0813);border:1px solid var(--line);border-radius:18px;padding:18px}.card:hover{border-color:#633c87}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#a855f71c;color:#d8b4fe;font-size:12px}.price{font-size:23px;font-weight:900;color:#e9d5ff}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--p),var(--p2));font-weight:900}.seller{display:flex;gap:12px;align-items:center}.stars{color:#fbbf24;letter-spacing:2px}.section{padding:35px 0}.hidden{display:none!important}
+.modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;z-index:50;padding:18px}.modal.on{display:grid}.modalbox{width:min(620px,100%);max-height:90vh;overflow:auto;background:#100918;border:1px solid #4b2a68;border-radius:20px;padding:22px;box-shadow:0 0 80px #000}.close{float:right;background:none;color:#aaa;font-size:24px}.form{display:grid;gap:12px}.chat{height:330px;overflow:auto;background:#09060d;border:1px solid var(--line);border-radius:14px;padding:12px}.msg{max-width:75%;padding:9px 12px;border-radius:13px;margin:7px 0;background:#21152e}.msg.me{margin-left:auto;background:#7c3aed}.admin{border-left:3px solid var(--p2);padding-left:15px}
+.notice{padding:12px 14px;border-radius:11px;background:#a855f714;border:1px solid #5b3180;color:#d8b4fe;margin:12px 0}.danger{color:#fda4af}.ok{color:#6ee7b7}
+footer{border-top:1px solid var(--line);padding:30px 5%;color:var(--muted);margin-top:50px}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.navlinks{display:none}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}.hero{padding-top:35px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="logo" href="#">VOID<span>MARKET</span></a>
+  <div class="navlinks">
+    <button onclick="scrollToId('products')">Products</button>
+    <button onclick="scrollToId('sellers')">Sellers</button>
+    <button onclick="openChat()">Chat</button>
+    <button onclick="openProfile()">Profile</button>
+    <button id="adminNav" class="hidden" onclick="openAdmin()">Admin</button>
+  </div>
+  <button id="authBtn" class="btn" onclick="openAuth()">Login / Register</button>
+</nav>
+
+<main class="wrap">
+<section class="hero">
+  <div>
+    <span class="pill">ROBLOX • BLOX FRUITS</span>
+    <h1>Trade smarter.<br><span class="grad">Play faster.</span></h1>
+    <p>Seller profiles, products, reviews, reports and messaging in one purple marketplace.</p>
+    <div class="toolbar">
+      <button class="btn" onclick="scrollToId('products')">Browse products</button>
+      <button class="btn ghost" onclick="openAuth()">Create account</button>
+    </div>
+    <div class="stats"><div class="stat"><b id="statUsers">0</b><br><span class="muted">Users</span></div><div class="stat"><b id="statProducts">0</b><br><span class="muted">Products</span></div><div class="stat"><b id="statReviews">0</b><br><span class="muted">Reviews</span></div></div>
+  </div>
+  <div class="hero-card">
+    <div class="row"><div><span class="pill">Verified seller</span><h2>Noet Kael</h2></div><div class="avatar">NK</div></div>
+    <p class="muted">Fast Blox Fruits services and gamepass gifts.</p>
+    <div class="stars">★★★★★ <span class="muted">4.9/5</span></div>
+    <hr style="border-color:var(--line);border-width:1px 0 0;margin:18px 0">
+    <button class="btn" style="width:100%" onclick="openChat('Noet Kael')">Message seller</button>
+  </div>
+</section>
+
+<section id="products" class="section">
+<h2>Marketplace</h2>
+<div class="toolbar">
+<input id="search" class="input search" placeholder="Search fruit, gamepass, leveling..." oninput="renderProducts()">
+<select id="category" class="select" style="max-width:180px" onchange="renderProducts()"><option value="">All categories</option><option>Fruits</option><option>Gamepass</option><option>Services</option><option>Items</option></select>
+<select id="sort" class="select" style="max-width:180px" onchange="renderProducts()"><option value="new">Newest</option><option value="low">Price: low</option><option value="high">Price: high</option><option value="rating">Rating</option></select>
+<button class="btn" onclick="requireLogin(addProduct)">+ Add product</button>
+</div>
+<div id="productGrid" class="grid"></div>
+</section>
+
+<section id="sellers" class="section">
+<h2>Top sellers</h2>
+<div id="sellerGrid" class="grid"></div>
+</section>
+</main>
+
+<footer>© 2026 VoidMarket • Full-stack-ready frontend demo • Never enter a real password into this demo.</footer>
+
+<!-- Auth -->
+<div id="authModal" class="modal"><div class="modalbox">
+<button class="close" onclick="closeModal('authModal')">×</button><h2 id="authTitle">Login</h2>
+<div class="toolbar"><button class="btn" onclick="setAuth('login')">Login</button><button class="btn ghost" onclick="setAuth('register')">Register</button></div>
+<form class="form" onsubmit="submitAuth(event)">
+<input id="authName" class="input hidden" placeholder="Username" minlength="3">
+<input id="authEmail" class="input" type="email" placeholder="Email" required>
+<input id="authPass" class="input" type="password" placeholder="Password" minlength="8" required>
+<div id="authNote" class="notice">Demo UI only. For real authentication, connect Supabase Auth/Firebase.</div>
+<button class="btn" id="authSubmit">Login</button>
+</form>
+</div></div>
+
+<!-- Profile -->
+<div id="profileModal" class="modal"><div class="modalbox">
+<button class="close" onclick="closeModal('profileModal')">×</button><h2>My profile</h2>
+<div id="profileBody"></div>
+</div></div>
+
+<!-- Chat -->
+<div id="chatModal" class="modal"><div class="modalbox">
+<button class="close" onclick="closeModal('chatModal')">×</button><h2>Real-time chat</h2>
+<div class="notice">Энэ UI нь real-time backend-д бэлэн бүтэцтэй. Одоогоор browser demo message хадгална.</div>
+<div id="chatBox" class="chat"></div>
+<form class="toolbar" onsubmit="sendChat(event)"><input id="chatInput" class="input" placeholder="Message..." required><button class="btn">Send</button></form>
+</div></div>
+
+<!-- Review -->
+<div id="reviewModal" class="modal"><div class="modalbox">
+<button class="close" onclick="closeModal('reviewModal')">×</button><h2>Review seller</h2>
+<form class="form" onsubmit="submitReview(event)"><input type="hidden" id="reviewSeller">
+<select id="reviewRating" class="select"><option value="5">★★★★★ 5</option><option value="4">★★★★ 4</option><option value="3">★★★ 3</option><option value="2">★★ 2</option><option value="1">★ 1</option></select>
+<textarea id="reviewText" class="area" rows="4" placeholder="Your review..." required></textarea><button class="btn">Post review</button></form>
+</div></div>
+
+<!-- Report -->
+<div id="reportModal" class="modal"><div class="modalbox">
+<button class="close" onclick="closeModal('reportModal')">×</button><h2>Report seller</h2>
+<form class="form" onsubmit="submitReport(event)"><input type="hidden" id="reportSeller">
+<select id="reportReason" class="select"><option>Scam / fraud</option><option>Fake product</option><option>Harassment</option><option>Other</option></select>
+<textarea id="reportText" class="area" rows="4" placeholder="Explain the issue..." required></textarea><button class="btn">Submit report</button></form>
+</div></div>
+
+<!-- Admin -->
+<div id="adminModal" class="modal"><div class="modalbox">
+<button class="close" onclick="closeModal('adminModal')">×</button><h2>🛡 Admin panel</h2>
+<div class="notice">Demo admin panel. Production admin access must be protected by server-side roles/RLS.</div>
+<div id="adminBody"></div>
+</div></div>
+
+<script>
+const KEY='voidmarket_v2';
+let state=JSON.parse(localStorage.getItem(KEY)||'null')||{
+ users:[{id:'u1',name:'Noet Kael',email:'seller@example.com',role:'seller',bio:'Blox Fruits seller',rating:4.9}],
+ products:[
+  {id:'p1',name:'Rare Fruit Pack',cat:'Fruits',price:25,seller:'Noet Kael',rating:4.9,created:3},
+  {id:'p2',name:'Gamepass Gift',cat:'Gamepass',price:12,seller:'VoidX',rating:4.7,created:2},
+  {id:'p3',name:'Leveling Service',cat:'Services',price:18,seller:'Kaizen Store',rating:4.8,created:1}
+ ],
+ reviews:[],reports:[],messages:[]
+};
+let current=JSON.parse(localStorage.getItem('voidmarket_current')||'null');
+let authMode='login', chatSeller='Noet Kael';
+function save(){localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem('voidmarket_current',JSON.stringify(current));}
+function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+function closeModal(id){document.getElementById(id).classList.remove('on')}
+function openModal(id){document.getElementById(id).classList.add('on')}
+function setAuth(m){authMode=m;document.getElementById('authTitle').textContent=m==='login'?'Login':'Register';document.getElementById('authName').classList.toggle('hidden',m==='login');document.getElementById('authName').required=m==='register';document.getElementById('authSubmit').textContent=m==='login'?'Login':'Create account'}
+function openAuth(){setAuth(current?'login':'login');openModal('authModal')}
+function submitAuth(e){e.preventDefault();let email=authEmail.value.trim(),pass=authPass.value;if(authMode==='register'){let name=authName.value.trim();if(state.users.some(u=>u.email===email)){alert('Email already exists');return}current={id:'u'+Date.now(),name,email,role:'user',bio:'',passwordDemo:pass};state.users.push(current);save();alert('Account created (demo). Connect Supabase Auth for real password security.');closeModal('authModal')}else{let u=state.users.find(x=>x.email===email);if(!u){alert('User not found in demo database');return}current=u;save();closeModal('authModal')}renderAll()}
+function requireLogin(fn){if(!current){alert('Please login/register first.');openAuth();return}fn()}
+function renderAll(){document.getElementById('authBtn').textContent=current?'Logout: '+current.name:'Login / Register';document.getElementById('adminNav').classList.toggle('hidden',!(current&&current.role==='admin'));renderProducts();renderSellers();stats();if(current) document.getElementById('authBtn').onclick=logout}
+function logout(){current=null;save();document.getElementById('authBtn').onclick=openAuth;renderAll()}
+function stats(){statUsers.textContent=state.users.length;statProducts.textContent=state.products.length;statReviews.textContent=state.reviews.length}
+function renderProducts(){let q=search.value.toLowerCase(),cat=category.value,sort=sortEl=sort.value;let arr=state.products.filter(p=>(!q||(p.name+' '+p.cat+' '+p.seller).toLowerCase().includes(q))&&(!cat||p.cat===cat));if(sort==='low')arr.sort((a,b)=>a.price-b.price);if(sort==='high')arr.sort((a,b)=>b.price-a.price);if(sort==='rating')arr.sort((a,b)=>b.rating-a.rating);productGrid.innerHTML=arr.map(p=>`<div class="card"><span class="pill">${p.cat}</span><h3>${p.name}</h3><div class="muted">${p.seller}</div><div class="row" style="margin:15px 0"><span class="price">$${p.price}</span><span class="stars">★ ${p.rating}</span></div><div class="toolbar"><button class="btn" onclick="openChat('${p.seller}')">Chat</button><button class="btn ghost" onclick="buy('${p.name}')">View</button></div></div>`).join('')||'<p class="muted">No products found.</p>'}
+function renderSellers(){let names=[...new Set(state.products.map(p=>p.seller)),...state.users.filter(u=>u.role==='seller').map(u=>u.name)];sellerGrid.innerHTML=names.map(n=>{let u=state.users.find(x=>x.name===n),rating=u?.rating||4.8;return `<div class="card"><div class="seller"><div class="avatar">${n.split(' ').map(x=>x[0]).join('').slice(0,2)}</div><div><b>${n}</b><div class="stars">★ ${rating}</div></div></div><p class="muted">${u?.bio||'Blox Fruits seller'}</p><div class="toolbar"><button class="btn" onclick="openChat('${n}')">Message</button><button class="btn ghost" onclick="review('${n}')">Review</button><button class="btn ghost" onclick="report('${n}')">Report</button></div></div>`}).join('')}
+function buy(name){alert('Product page demo: '+name+'. Real checkout/order flow can be connected later.')}
+function openChat(s='Noet Kael'){chatSeller=s;renderChat();openModal('chatModal')}
+function renderChat(){let msgs=state.messages.filter(m=>m.seller===chatSeller);chatBox.innerHTML=msgs.map(m=>`<div class="msg ${m.from===current?.name?'me':''}"><b>${m.from}</b><br>${m.text}</div>`).join('')||'<div class="muted">No messages yet.</div>';chatBox.scrollTop=chatBox.scrollHeight}
+function sendChat(e){e.preventDefault();if(!current){alert('Login first');return}state.messages.push({seller:chatSeller,from:current.name,text:chatInput.value,time:Date.now()});chatInput.value='';save();renderChat()}
+function review(s){if(!current){openAuth();return}reviewSeller.value=s;openModal('reviewModal')}
+function submitReview(e){e.preventDefault();state.reviews.push({seller:reviewSeller.value,user:current.name,rating:+reviewRating.value,text:reviewText.value});let u=state.users.find(x=>x.name===reviewSeller.value);if(u){let rs=state.reviews.filter(r=>r.seller===u.name);u.rating=+(rs.reduce((a,r)=>a+r.rating,0)/rs.length).toFixed(1)}save();closeModal('reviewModal');reviewText.value='';renderAll();alert('Review posted!')}
+function report(s){if(!current){openAuth();return}reportSeller.value=s;openModal('reportModal')}
+function submitReport(e){e.preventDefault();state.reports.push({seller:reportSeller.value,reporter:current.name,reason:reportReason.value,text:reportText.value,status:'open',time:new Date().toISOString()});save();closeModal('reportModal');alert('Report sent to moderators.')}
+function openProfile(){if(!current){openAuth();return}profileBody.innerHTML=`<div class="seller"><div class="avatar">${current.name.slice(0,2).toUpperCase()}</div><div><h3>${current.name}</h3><span class="pill">${current.role}</span></div></div><hr style="border-color:var(--line);margin:18px 0"><form class="form" onsubmit="saveProfile(event)"><input id="profileName" class="input" value="${current.name}" required><textarea id="profileBio" class="area" rows="4" placeholder="Bio">${current.bio||''}</textarea><button class="btn">Save profile</button></form><div class="toolbar"><button class="btn ghost" onclick="logout();closeModal('profileModal')">Logout</button></div>`;openModal('profileModal')}
+function saveProfile(e){e.preventDefault();current.name=profileName.value;current.bio=profileBio.value;let u=state.users.find(x=>x.id===current.id);if(u){u.name=current.name;u.bio=current.bio}save();closeModal('profileModal');renderAll()}
+function addProduct(){let n=prompt('Product name?');if(!n)return;let price=+prompt('Price?','10');if(!price)return;let cat=prompt('Category: Fruits / Gamepass / Services / Items','Items');state.products.push({id:'p'+Date.now(),name:n,cat:cat||'Items',price,seller:current.name,rating:5,created:Date.now()});save();renderAll()}
+function openAdmin(){if(!current||current.role!=='admin'){alert('Admin only');return}adminBody.innerHTML=`<div class="stats"><div class="stat"><b>${state.users.length}</b><br>Users</div><div class="stat"><b>${state.products.length}</b><br>Products</div><div class="stat"><b>${state.reports.length}</b><br>Reports</div></div><h3>Reports</h3>${state.reports.map((r,i)=>`<div class="card admin"><b>#${i+1} ${r.seller}</b><p>${r.reason}</p><p class="muted">${r.text}</p><button class="btn ghost" onclick="resolveReport(${i})">${r.status}</button></div>`).join('')||'<p class="muted">No reports.</p>'}`;openModal('adminModal')}
+function resolveReport(i){state.reports[i].status='resolved';save();openAdmin()}
+renderAll();
+</script>
+</body>
+</html>
